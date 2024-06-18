@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package payment;
+
+option go_package="github.com/H8-FTGO-P3/graded-challange-2-v2-Andrewalifb/payment-service";
+
+service PaymentService {
+  rpc CreatePayment (PaymentCreateRequest) returns (PaymentCreateResponse) {}
+  rpc GetPayment (PaymentGetRequest) returns (PaymentGetResponse) {}
+  rpc UpdatePayment (PaymentUpdateRequest) returns (PaymentUpdateResponse) {}
+  rpc DeletePayment (PaymentDeleteRequest) returns (PaymentDeleteResponse) {}
+  rpc GetAllPayments (PaymentGetAllRequest) returns (PaymentGetAllResponse) {}
+}
+
+message Payment {
+  string id = 1;
+  double amount = 2;
+  string method = 3;
+  string status = 4;
+  string card_type = 5;
+  double transaction_fee = 6;
+}
+
+message PaymentCreateRequest {
+  double amount = 1;
+  string method = 2;
+  string card_type = 3;
+}
+
+message PaymentCreateResponse {
+  Payment payment = 1;
+}
+
+message PaymentGetRequest {
+  string id = 1;
+}
+
+message PaymentGetResponse {
+  Payment payment = 1;
+}
+
+message PaymentUpdateRequest {
+  string id = 1;
+  double amount = 2;
+  string method = 3;
+  string card_type = 4;
+  double transaction_fee = 5;
+}
+
+message PaymentUpdateResponse {
+  Payment payment = 1;
+}
+
+message PaymentDeleteRequest {
+  string id = 1;
+}
+
+message PaymentDeleteResponse {
+  string id = 1;
+  string status = 2;
+}
+
+message PaymentGetAllRequest {}
+
+message PaymentGetAllResponse {
+  repeated Payment payments = 1;
+}
+

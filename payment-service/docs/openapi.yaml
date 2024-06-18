@@ -1,0 +1,175 @@
+openapi: 3.0.0
+info:
+  title: Payment Service API
+  description: This is the API documentation for the Payment Service. The service provides endpoints for creating, updating, deleting, retrieving a single payment, and retrieving all payments.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+paths:
+  /payments:
+    post:
+      summary: Create a new payment
+      description: This endpoint allows for the creation of a new payment. It requires the amount, method, and card type of the payment.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreateRequest'
+      responses:
+        '200':
+          description: A successful response indicating that the payment was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCreateResponse'
+    get:
+      summary: Get all payments
+      description: This endpoint retrieves all payments that have been created.
+      responses:
+        '200':
+          description: A successful response containing all payments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentGetAllResponse'
+  /payments/{id}:
+    put:
+      summary: Update an existing payment
+      description: This endpoint allows for the updating of an existing payment. It requires the ID of the payment, and the updated amount, method, card type, and transaction fee.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentUpdateRequest'
+      responses:
+        '200':
+          description: A successful response indicating that the payment was updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentUpdateResponse'
+    delete:
+      summary: Delete a payment
+      description: This endpoint allows for the deletion of an existing payment. It requires the ID of the payment.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A successful response indicating that the payment was deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentDeleteResponse'
+    get:
+      summary: Get a payment by ID
+      description: This endpoint retrieves a single payment by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A successful response containing the payment with the given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentGetResponse'
+components:
+  schemas:
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: number
+          format: double
+        method:
+          type: string
+        status:
+          type: string
+        card_type:
+          type: string
+        transaction_fee:
+          type: number
+          format: double
+    PaymentCreateRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        method:
+          type: string
+        card_type:
+          type: string
+    PaymentCreateResponse:
+      type: object
+      properties:
+        payment:
+          $ref: '#/components/schemas/Payment'
+    PaymentGetRequest:
+      type: object
+      properties:
+        id:
+          type: string
+    PaymentGetResponse:
+      type: object
+      properties:
+        payment:
+          $ref: '#/components/schemas/Payment'
+    PaymentUpdateRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: number
+          format: double
+        method:
+          type: string
+        card_type:
+          type: string
+        transaction_fee:
+          type: number
+          format: double
+    PaymentUpdateResponse:
+      type: object
+      properties:
+        payment:
+          $ref: '#/components/schemas/Payment'
+    PaymentDeleteRequest:
+      type: object
+      properties:
+        id:
+          type: string
+    PaymentDeleteResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    PaymentGetAllRequest:
+      type: object
+    PaymentGetAllResponse:
+      type: object
+      properties:
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
